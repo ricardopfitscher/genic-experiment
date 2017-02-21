@@ -81,7 +81,7 @@ def create_topology1():
     time.sleep(10)
     #run experiment
     
-    for i in range(0,1):
+    for i in range(0,5):
        for fwbw in [5,50,100]: #
           for snortbw in [5,50,100]: 
              for reqsize in ['128KB']: #available sizes are: '4KB','8KB','16KB','32KB','64KB','128KB','256KB','512KB','1024KB','2048KB','4096KB','8192KB','16384KB','32768KB']: 
@@ -100,16 +100,16 @@ def create_topology1():
                 	server.cmd(strcmd)
                 	time.sleep(1)
                 	client.cmd("ping -c 2 10.0.0.50 >> log-ping")
-                	client.cmd("ping -c 2 10.0.0.50 >> log-ping")
-                	#strcmd = "%s %d &" % ('./start_iperfc.sh',30)
-                        #client.cmd(strcmd)
+                	client.cmd("ping -c 2 10.0.0.50 >> log-ping")        	                     
                         strcmd = "%s %d %d %d %d %s %d &" % ('./start_client.sh',fwbw,snortbw,fwcpu,snortcpu,reqsize,i)
                         client.cmd(strcmd)
                 	#the parameter for iperfc is the target bandwidth
                 	strcmd = "%s %d" % ('./start_iperfc.sh',30)
                         client.cmd(strcmd)
-                	print "Waiting 180 seconds to the experiment %d-%d-%d-%d-%s-%d"%(fwbw,snortbw,fwcpu,snortcpu,reqsize,i)
-                	time.sleep(180)
+                	print "Waiting to the experiment %d-%d-%d-%d-%s-%d"%(fwbw,snortbw,fwcpu,snortcpu,reqsize,i)
+                	#use 180 for rubis workload
+                        #use 100 for the stratos
+			time.sleep(100)
                 	print "Copy results and cleanup"
                 	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* vagrant@10.0.2.15:/home/vagrant/son-emu/logs/"
                 	fw.cmd(strcmd)
