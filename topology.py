@@ -49,7 +49,7 @@ def create_topology1():
     dc1 = net.addDatacenter("dc1")
     dc2 = net.addDatacenter("dc2")
     s1 = net.addSwitch("s1")
-    linkopts = dict(delay="10ms",bw=100)
+    linkopts = dict(delay="1ms",bw=100)
     net.addLink(dc1, s1, **linkopts)
     net.addLink(dc2, s1, **linkopts)
 
@@ -80,37 +80,45 @@ def create_topology1():
     #run experiment
     
     for i in range(0,1):
-       for fwbw in [10]:#,25,50,75,100]:#20,30,40,50,60,70,80,90,100]:
-          for snortbw in [10]:#,25,50,75,100]:#20,30,40,50,60,70,80,90,100]:
-             for reqsize in ['2KB','32KB','1024KB','32768KB']:#,'4KB','8KB','16KB','32KB','64KB','128KB','256KB','512KB','1024KB','2048KB','4096KB','8192KB','16384KB','32768KB']: 
-                #inputs: fwbw snortbw reqsize iteration
-                strcmd = "%s %d %d %s %d &" % ('./start_firewall.sh',fwbw,snortbw,reqsize,i) 
-                fw.cmd(strcmd)
-                time.sleep(1)    
-                strcmd = "%s %d %d %s %d &" % ('./start_snort.sh',fwbw,snortbw,reqsize,i)
-                snort.cmd(strcmd)
-                strcmd = "%s %d %d %s %d &" % ('./start_server.sh',fwbw,snortbw,reqsize,i)
-                server.cmd(strcmd)
-                time.sleep(5)
-                client.cmd("ping -c 2 10.0.0.50 >> log-ping")
-                client.cmd("ping -c 2 10.0.0.50 >> log-ping")
-                strcmd = "%s %d %d %s %d &" % ('./start_client.sh',fwbw,snortbw,reqsize,i)
-                client.cmd(strcmd)
-                strcmd = "%s" % ('./start_iperfc.sh')
-                client.cmd(strcmd)
-                print "Waiting 90 seconds to experiments to be finished"
-                time.sleep(90)
-                print "Copy results and cleanup"
-                strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* vagrant@10.0.2.15:/home/vagrant/son-emu/logs/"
-                fw.cmd(strcmd)
-                snort.cmd(strcmd)
-                strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no log* vagrant@10.0.2.15:/home/vagrant/son-emu/logs/"
-                client.cmd(strcmd)
-                server.cmd(strcmd)
-                fw.cmd("rm guiltiness*")
-                snort.cmd("rm guiltiness*")
-                client.cmd("rm log*")
-                server.cmd("rm log*")
+       for fwbw in [100]: #,25,50,75,100]: #,25,50,75,100]:
+          for snortbw in [100]: #,25,50,75,100]: #,25,50,75,100]:
+             for reqsize in ['128KB']: #'4KB','8KB','16KB','32KB','64KB','128KB','256KB','512KB','1024KB','2048KB','4096KB','8192KB','16384KB','32768KB']: 
+                for fwcpu in [100]:
+                   for snortcpu in [100]:
+                	#inputs: fwbw snortbw reqsize iteration
+                	r=0
+                	fw.setParam(r,'setCPUFrac',cpu=fwcpu/200)
+                	snort.setParam(r,'setCPUFrac',cpu=snortcpu/200)
+                	strcmd = "%s %d %d %d %d %s %d &" % ('./start_firewall.sh',fwbw,snortbw,fwcpu,snortcpu,reqsize,i) 
+                	fw.cmd(strcmd)
+                	time.sleep(1)
+                	strcmd = "%s %d %d %d %d %s %d &" % ('./start_snort.sh',fwbw,snortbw,fwcpu,snortcpu,reqsize,i)
+                	snort.cmd(strcmd)
+                	strcmd = "%s %d %d %d %d %s %d &" % ('./start_server.sh',fwbw,snortbw,fwcpu,snortcpu,reqsize,i)
+                	server.cmd(strcmd)
+                	time.sleep(1)
+                	client.cmd("ping -c 2 10.0.0.50 >> log-ping")
+                	client.cmd("ping -c 2 10.0.0.50 >> log-ping")
+                	#strcmd = "%s %d &" % ('./start_iperfc.sh',30)
+                        #client.cmd(strcmd)
+                        strcmd = "%s %d %d %d %d %s %d &" % ('./start_client.sh',fwbw,snortbw,fwcpu,snortcpu,reqsize,i)
+                        client.cmd(strcmd)
+                	#the parameter for iperfc is the target bandwidth
+                	strcmd = "%s %d" % ('./start_iperfc.sh',30)
+                        client.cmd(strcmd)
+                	print "Waiting 180 seconds to the experiment %d-%d-%d-%d-%s-%d"%(fwbw,snortbw,fwcpu,snortcpu,reqsize,i)
+                	time.sleep(180)
+                	print "Copy results and cleanup"
+                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* vagrant@10.0.2.15:/home/vagrant/son-emu/logs/"
+                	fw.cmd(strcmd)
+                	snort.cmd(strcmd)
+                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no log* vagrant@10.0.2.15:/home/vagrant/son-emu/logs/"
+                	client.cmd(strcmd)
+                	server.cmd(strcmd)
+                	fw.cmd("rm guiltiness*")
+                	snort.cmd("rm guiltiness*")
+                	client.cmd("rm log*")
+                	server.cmd("rm log*")
     net.CLI()
     net.stop()
 
