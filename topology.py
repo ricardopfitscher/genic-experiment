@@ -71,6 +71,8 @@ def create_topology1():
     # start the emulation platform
     net.start()
     # create hosts and vnfs
+    #use ./init_vnfs_rubis for rubis experiments
+    #use ./init_vnfs for stratos experiments
     subprocess.call("./init_vnfs.sh",shell=True)
     subprocess.call("./chain_vnfs.sh",shell=True)
 
@@ -80,11 +82,11 @@ def create_topology1():
     #run experiment
     
     for i in range(0,1):
-       for fwbw in [100]: #,25,50,75,100]: #,25,50,75,100]:
-          for snortbw in [100]: #,25,50,75,100]: #,25,50,75,100]:
-             for reqsize in ['128KB']: #'4KB','8KB','16KB','32KB','64KB','128KB','256KB','512KB','1024KB','2048KB','4096KB','8192KB','16384KB','32768KB']: 
-                for fwcpu in [100]:
-                   for snortcpu in [100]:
+       for fwbw in [5,50,100]: #
+          for snortbw in [5,50,100]: 
+             for reqsize in ['128KB']: #available sizes are: '4KB','8KB','16KB','32KB','64KB','128KB','256KB','512KB','1024KB','2048KB','4096KB','8192KB','16384KB','32768KB']: 
+                for fwcpu in [5,50,100]:
+                   for snortcpu in [5,50,100]:
                 	#inputs: fwbw snortbw reqsize iteration
                 	r=0
                 	fw.setParam(r,'setCPUFrac',cpu=fwcpu/200)
