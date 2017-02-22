@@ -80,7 +80,8 @@ def create_topology1():
     print "Waiting warmup"
     time.sleep(10)
     #run experiment
-    
+    #CONFIGURE number of cores
+    cores = 2
     for i in range(0,5):
        for fwbw in [5,50,100]: #
           for snortbw in [5,50,100]: 
@@ -89,8 +90,8 @@ def create_topology1():
                    for snortcpu in [5,50,100]:
                 	#inputs: fwbw snortbw reqsize iteration
                 	r=0
-                	fw.setParam(r,'setCPUFrac',cpu=fwcpu/200)
-                	snort.setParam(r,'setCPUFrac',cpu=snortcpu/200)
+                	fw.setParam(r,'setCPUFrac',cpu=fwcpu/(cores*100))
+                	snort.setParam(r,'setCPUFrac',cpu=snortcpu/(cores*100))
                 	strcmd = "%s %d %d %d %d %s %d &" % ('./start_firewall.sh',fwbw,snortbw,fwcpu,snortcpu,reqsize,i) 
                 	fw.cmd(strcmd)
                 	time.sleep(1)
