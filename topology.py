@@ -82,12 +82,12 @@ def create_topology1():
     #run experiment
     #CONFIGURE number of cores
     cores = 2
-    for i in range(0,5):
-       for fwbw in [5,50,100]: #
-          for snortbw in [5,50,100]: 
+    for i in range(0,1):
+       for fwbw in [5]: #
+          for snortbw in [5]: 
              for reqsize in ['128KB']: #available sizes are: '4KB','8KB','16KB','32KB','64KB','128KB','256KB','512KB','1024KB','2048KB','4096KB','8192KB','16384KB','32768KB']: 
-                for fwcpu in [5,50,100]:
-                   for snortcpu in [5,50,100]:
+                for fwcpu in [100]:
+                   for snortcpu in [100]:
                 	#inputs: fwbw snortbw reqsize iteration
                 	r=0
                 	fw.setParam(r,'setCPUFrac',cpu=fwcpu/(cores*100))
@@ -122,7 +122,7 @@ def create_topology1():
                 	snort.cmd("rm guiltiness*")
                 	client.cmd("rm log*")
                 	server.cmd("rm log*")
-    net.CLI()
+    #net.CLI()
     net.stop()
 
 
