@@ -1,0 +1,59 @@
+#install sonata-nfv
+git clone https://github.com/sonata-nfv/son-emu.git
+#access directory folder
+cd son-emu
+#start vms on vagrant
+#this will take a lot of time
+vagrant up
+#configure Memory and CPUs
+nano Vagrantfile
+vb.memory = 4096 #define how much you want to set
+vb.cpus = 2 #define how many cores
+#restart vagrant
+vagrant reload
+#log in VM (Host)
+vagrant ssh
+#install the docker
+sudo docker pull rjpfitscher/genic-rubis
+sudo docker pull rjpfitscher/genic-vnf
+#add ssh public key to vagrant environment (for copy experiment results)
+sudo docker run -t -i rjpfitscher/genic-rubis /bin/bash
+cat /root/.ssh/id_rsa.pub
+exit
+#inside vagrant:
+copy the id_rsa.pub content to ~/.ssh/authorized_keys
+#the same for rjpfitscher/genic-vnf
+sudo docker run -t -i rjpfitscher/genic-vnf /bin/bash
+cat .ssh/id_rsa.pubnan
+exit
+#inside vagrant:
+copy the id_rsa.pub content to ~/.ssh/authorized_keys
+#download running scritps
+git clone https://github.com/ricardopfitscher/genic-experiment
+#go to directory
+cd genic-experiment
+#copy stable version of son-emu files
+cp network.py ../src/emuvim/api/rest/
+cp rest_api_endpoint.py ../src/emuvim/api/rest/
+#configure scenario
+nano topology.py
+#run scenario
+sudo python topology.py
+#configure summarization files according to topology results:
+nano summaryze-rubis.sh
+nano summaryze-stratos.sh
+#summaryze values
+#two lines are inserted to data, they define the upper and lower bound limits for network performance
+#these limits are passed as arguments for the script
+#$1 is the upper limit for RT
+#$2 is the lower Rt
+#$3 is the higher throughput
+#$4 is the lower throughput
+#in our RUBiS case: 
+sh summarize-rubis.sh 8000 240 60 1
+#in our Stratos case:
+sh summarize-stratos.sh 6 0.5 60 1
+#run R to generate plots
+Rscript ploter.R
+
+
