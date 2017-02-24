@@ -9,7 +9,7 @@ import json
 import numpy as np
 import scipy
 from scipy.optimize import curve_fit
-DEBUG = True
+DEBUG = False
 
 fitted = False
 nn_threshold = 0.8 #threshold for update the learn
