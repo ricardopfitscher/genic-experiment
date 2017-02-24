@@ -7,7 +7,7 @@
 
 #define here the range of values to summarize, please use the same than topology.py
 START=0
-END=4 
+END=3
 
 echo vm1r,vm2r,vm1c,vm2c,size,gvm1,gvm2,uvm1,uvm2,avm1,avm2,qvm1,qvm2,quvm1,quvm2,rt,thr >> summary.csv
 
@@ -26,7 +26,7 @@ for vm2c in 5 50 100 # set here the cpu capacity range for the dpi, 5 means 5% o
 do 
 for size in 128KB # set here the file sizes you configured 
 do
-for i in `seq $START ($END-1)`
+for i in `seq $START $END`
 do
 	gvm1=`cut -f 2 ../logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
 	gvm2=`cut -f 2 ../logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
