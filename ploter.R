@@ -1,7 +1,8 @@
+
+install.packages('ggplot2', repos='http://cran.us.r-project.org')
+install.packages('plyr', repos='http://cran.us.r-project.org')
 library(ggplot2)
 library(plyr)
-#library(grid)
-
 
 #read collected results
 data <- read.csv("summary.csv")

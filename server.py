@@ -3,10 +3,7 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.naive_bayes import GaussianNB
 import threading
 import cherrypy
-import matplotlib
 import requests
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 import csv
 import json
 import numpy as np
@@ -214,15 +211,6 @@ def add_data(U,A,Qu,Q,Rt):
 	for m in monitors:
 		m.update(currentCoefficients[0],currentCoefficients[1],currentCoefficients[2],currentCoefficients[3])
 
-	if DEBUG:
-		fig = plt.figure()
-		ax = fig.add_subplot(111)
-		for value in historic:
-			line, = ax.plot(range(tam), historic[value], label = value)
-
-		ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),fancybox=True, shadow=True, ncol=5)
-		fig.savefig('coefficientsHistory.png')
-		#fig.show()
 	
 
 def linear_regression():
