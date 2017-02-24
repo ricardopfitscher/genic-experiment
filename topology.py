@@ -25,10 +25,20 @@ the Horizon 2020 and 5G-PPP programmes. The authors would like to
 acknowledge the contributions of their colleagues of the SONATA
 partner consortium (www.sonata-nfv.eu).
 """
-"""
-A simple topology with two PoPs for the y1 demo story board.
 
-        (dc1) <<-->> s1 <<-->> (dc2)
+"""
+README for the Who is Guilty? paper reproduction
+The configurable parameteres are commented at each line. The following lines contains 
+adjustable settings:
+at line 86: define if the experiment is for RUBiS or Stratos workload
+at line 94: number of cores that were provisioned to the VM
+at line 95: range of repetitions 
+at line 96: levels of the fw network bandwidth factor
+at line 97: levels of the dpi network bandwidth factor
+at line 98: requested file sizes for the Stratos workload (no influence to RUBiS)
+at line 99: levels of the fw cpu capacity factor
+at line 100: levels of the dpi cpu capacity factor
+at line 122: waiting time, 180 for RUBiS and 100 for Stratos
 """
 
 import subprocess
@@ -82,13 +92,12 @@ def create_topology1():
     #run experiment
     #CONFIGURE number of cores
     cores = 4
-    for i in range(0,4):
-       for fwbw in [5,50,100]: #
-          for snortbw in [5,50,100]: 
+    for i in range(0,4): #Set here the number of repetitions 
+       for fwbw in [5,50,100]: # set here the network bandwidth range for the firewall
+          for snortbw in [5,50,100]:  # set here the network bandwidth range for the dpi
              for reqsize in ['128KB']: #available sizes are: '4KB','8KB','16KB','32KB','64KB','128KB','256KB','512KB','1024KB','2048KB','4096KB','8192KB','16384KB','32768KB']: 
-                for fwcpu in [5,50,100]:
-                   for snortcpu in [5,50,100]:
-                	#inputs: fwbw snortbw reqsize iteration
+                for fwcpu in [5,50,100]: # set here the cpu capacity range for the firewall, 5 means 5% of one cpu
+                   for snortcpu in [5,50,100]: # set here the cpu capacity range for the dpi, 5 means 5% of one cpu
                 	r=0
                 	fw.setParam(r,'setCPUFrac',cpu=fwcpu/(cores*100))
                 	snort.setParam(r,'setCPUFrac',cpu=snortcpu/(cores*100))
@@ -109,8 +118,8 @@ def create_topology1():
                         client.cmd(strcmd)
                 	print "Waiting to the experiment %d-%d-%d-%d-%s-%d"%(fwbw,snortbw,fwcpu,snortcpu,reqsize,i)
                 	#use 180 for rubis workload
-                        #use 100 for the stratos
-			time.sleep(180)
+                    #use 100 for the stratos
+			        time.sleep(180)
                 	print "Copy results and cleanup"
                 	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* vagrant@10.0.2.15:/home/vagrant/son-emu/logs/"
                 	fw.cmd(strcmd)
@@ -122,7 +131,6 @@ def create_topology1():
                 	snort.cmd("rm guiltiness*")
                 	client.cmd("rm log*")
                 	server.cmd("rm log*")
-    #net.CLI()
     net.stop()
 
 
