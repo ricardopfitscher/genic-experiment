@@ -23,8 +23,7 @@ currentCoefficients = [0.1,1,0.001,-0.8] # Current best values for coefficients 
 defaultCoefficients = [0.1,1,0.001,-0.8]
 historic = {'c1':[],'c2':[],'c3':[],'c4':[],'rsquared':[]}
 
-#Testar diferentes configuracoes para ver qual eh a melhor opcao
-clf = MLPRegressor(algorithm='l-bfgs',alpha=1e-5, random_state=1, activation='tanh',hidden_layer_sizes=(100,5), learning_rate = 'adaptive')
+clf = MLPRegressor(solver='lbfgs',alpha=1e-5, random_state=1, activation='tanh',hidden_layer_sizes=(100,5), learning_rate = 'adaptive')
 
 frontpage = """<html>
 	<head></head>
@@ -276,7 +275,7 @@ class Agent:
 			returnData['metrics'].append(metrics[line])
 		return returnData
 
-	#curl -d url='http://143.54.12.22:9999/api/data'  -X POST 'http://143.54.12.174:9998/api/agent'
+	#curl -d url='http://host:9999/api/data'  -X POST 'http://host:9998/api/agent'
 	def POST(self, url):
 		try:
 			if DEBUG: print url
@@ -334,7 +333,7 @@ if __name__ == '__main__':
 
 	cherrypy.tree.mount(AgentInterface(), '/', conf)
 	cherrypy.tools.CORS = cherrypy.Tool('before_handler', CORS)
-	cherrypy.config.update({'server.socket_host': '143.54.12.174','server.socket_port': 9998}) 
+	cherrypy.config.update({'server.socket_host': '127.0.0.1','server.socket_port': 9998}) 
 	cherrypy.engine.start()
 	cherrypy.engine.block()
 

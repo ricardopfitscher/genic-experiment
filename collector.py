@@ -10,7 +10,7 @@ import time
 
 if __name__ == '__main__':
 
-	string_temp = "http://143.54.12.174:9998/api/data" 
+	string_temp = "http://127.0.0.1:9998/api/data" 
 	headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
 	with open('TR_Summarized.csv', 'rb') as f:

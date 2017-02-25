@@ -33,8 +33,8 @@ system(command="sleep 40",wait = TRUE)
 system(command="python collector.py",wait = FALSE)
 system(command="sleep 90",wait = TRUE)
 
-tr_summarized$qu.vm1 <- tr_summarized$q.vm1 / (1500 * 1000)
-tr_summarized$qu.vm2 <- tr_summarized$q.vm2 / (1500 * 1000)
+#tr_summarized$qu.vm1 <- tr_summarized$q.vm1 / (1500 * 1000)
+#tr_summarized$qu.vm2 <- tr_summarized$q.vm2 / (1500 * 1000)
 
 tr_summarized["sumUsage"] <- NA
 tr_summarized["sumActive"] <- NA
