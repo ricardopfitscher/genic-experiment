@@ -89,7 +89,7 @@ p +     stat_contour() +
   theme_bw() +
   theme(legend.text = element_text( size = 16),legend.position=c(0.92,0.85),axis.text = element_text(size = 20), axis.title = element_text(size = 20),text = element_text(size = 20))   
 
-ggsave("Fig3d.pdf",height=6,width = 6)
+ggsave("Fig4d.pdf",height=6,width = 6)
 
 model <- lm(data=tr_summarized, rtNorm~ (I(tr_summarized$sumUsage)+sumActive+I(1/(1.01-sumQueueUsage))+I((sumActive)/(1+sumQueue)))-1) 
 summary(model)
