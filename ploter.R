@@ -150,6 +150,9 @@ c2 <- learnerCoeff[1,2]
 c3 <- learnerCoeff[1,3]
 c4 <- learnerCoeff[1,4]
 
+rSquared <- round(learnerCoeff[1,5],digits=2)
+rSquared <- paste("R-squared = ",rSquared)
+
 tr_summarized$g.vm1=1*(c4*(tr_summarized$a.vm1/(1+tr_summarized$q.vm1))+c1*(1/(1.01-(tr_summarized$u.vm1)))+c2*tr_summarized$a.vm1+c3*tr_summarized$qu.vm1)
 tr_summarized$g.vm2=1*(c4*(tr_summarized$a.vm2/(1+tr_summarized$q.vm2))+c1*(1/(1.01-(tr_summarized$u.vm2)))+c2*tr_summarized$a.vm2+c3*tr_summarized$qu.vm2)
 tr_summarized$g.vm1[tr_summarized$g.vm1 >= 1] <- 1.0
@@ -161,7 +164,7 @@ m <- ggplot(data = tr_summarized, aes(x=rtNorm, y=estimated))
 m  + scale_x_continuous(limits=c(0,1),breaks=seq(0, 1, by=0.1)) + 
   scale_y_continuous(limits=c(0,1),breaks=seq(0, 1, by=0.1))+
   theme_bw() +  
-  annotate("text", x = 0.455, y = 0.505, label ="R-squared = 0.98", angle = 45, size=9)+
+  annotate("text", x = 0.455, y = 0.505, label =rSquared, angle = 45, size=9)+
   geom_point(data=tr_summarized,aes(y=(estimated)), size=4, shape=1) +
   xlab("Normalized response time") +ylab("Guiltiness estimative") +
   theme(axis.line.x = element_line(color = 'black'),axis.line.y = element_line(color = 'black'),legend.justification=c(0,1), legend.position=c(0,1),legend.title=element_blank(),axis.text = element_text(size = 24), axis.title = element_text(size = 24),text = element_text(size = 24)) +  
