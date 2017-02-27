@@ -149,6 +149,9 @@ c2 <- learnerCoeff[1,2]
 c3 <- learnerCoeff[1,3]
 c4 <- learnerCoeff[1,4]
 
+rSquared <- round(learnerCoeff[1,5],digits=2)
+rSquared <- paste("R-squared = ",rSquared)
+
 tr_summarized$g.vm1=1*(c4*(tr_summarized$a.vm1/(1+tr_summarized$q.vm1))+c1*(1/(1.01-(tr_summarized$u.vm1)))+c2*tr_summarized$a.vm1+c3*tr_summarized$qu.vm1)
 tr_summarized$g.vm2=1*(c4*(tr_summarized$a.vm2/(1+tr_summarized$q.vm2))+c1*(1/(1.01-(tr_summarized$u.vm2)))+c2*tr_summarized$a.vm2+c3*tr_summarized$qu.vm2)
 tr_summarized$g.vm1[tr_summarized$g.vm1 >= 1] <- 1.0
