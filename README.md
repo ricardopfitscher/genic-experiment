@@ -74,6 +74,7 @@ $ sh summarize-rubis.sh 8000 1000 60 1
 ```
 
 One can notice that the summarize-stratos.sh file was also provided. We encourage researchers to replicate the experiments using the workload from the Stratos related work. For doing that, follow the instructions inside the topology.py to select the mentioned workload, and then run appropriate summarization script.   
+
 Finally, the last step to reproduce our plots consists of running the Rscripts. As the the son-emu folder is shared between VM and host environment, this process can be done outside the VM. By running at the host, it helps to visualize and copy the resultant figures. Some additional packages are required to run R and the current implementation of the learning server in Python. To perform the additional installations, run the following commands:
 
 ```
