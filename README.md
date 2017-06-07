@@ -1,6 +1,6 @@
 # Guiltiness: Experiments reproduction
 
-To perform these experiments, some packages are required in the host environment (the one in which the virtual machine runs). These packages can be installed through the following commands: 
+To perform guiltiness experiments, some packages are required in the host environment (the one in which the virtual machine runs). These packages can be installed through the following commands: 
 ```
 $ apt-get install git-core vagrant virtualbox
 ```
