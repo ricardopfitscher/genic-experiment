@@ -26,9 +26,11 @@ $ vagrant reload
 ```
 Sometimes it is necessary to resize disk space.
 
-VBoxManage clonehd "source.vmdk" "cloned.vdi" --format vdi
-VBoxManage modifyhd "cloned.vdi" --resize 20480
-VBoxManage clonehd "cloned.vdi" "resized.vmdk" --format vmdk
+```
+$ VBoxManage clonehd "source.vmdk" "cloned.vdi" --format vdi
+$ VBoxManage modifyhd "cloned.vdi" --resize 20480
+$ VBoxManage clonehd "cloned.vdi" "resized.vmdk" --format vmdk
+```
 
 Next, prepare the virtual environment to run the experiments, for that, we must login into the VM, download the docker images, and copy the .ssh public keys of the docker images to the VM’s authorized_keys file:
 
