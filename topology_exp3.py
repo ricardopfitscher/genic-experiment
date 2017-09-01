@@ -98,7 +98,7 @@ def create_topology1():
              for vnf2cpu in [10,100]: # set the cpu capacity for the vnf2
                 for vnf3cpu in [10,100]: # set the cpu capacity for the vnf3, 5 means 5% of one cpu
                    for vnf1stress in [0,cores]:
-                      for vnf2stress in [0,cores]:
+                      for vnf2stress in [4,cores]:
 		         for vnf3stress in [0,cores]:
 			    r=0
 			    vnf1.setParam(r,'setCPUFrac',cpu=vnf1cpu/(cores*100))
@@ -117,12 +117,12 @@ def create_topology1():
 			    server.cmd(strcmd)
 			    time.sleep(1)
 			    client.cmd("ping -c 2 10.0.0.50 >> log-ping")
-			    client.cmd("ping -c 2 10.0.0.50 >> log-ping")        	                     
+			    client.cmd("ping -c 2 10.0.0.50 >> log-ping")
 			    strcmd = "%s %d %d %d %d %s %d %d %d %d &" % ('./start_client.sh',100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i,vnf1stress,vnf2stress,vnf3stress) 
 			    client.cmd(strcmd)
 			    #the parameter for iperfc is the target bandwidth
-			    strcmd = "%s %d" % ('./start_iperfc.sh',30)
-			    client.cmd(strcmd)
+			    #strcmd = "%s %d" % ('./start_iperfc.sh',30)
+			    #client.cmd(strcmd)
 			    print "Waiting to the experiment %d-%d-%d-%d-%s-%d-%d-%d-%d"%(100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i,vnf1stress,vnf2stress,vnf3stress) 
 			    #use 180 for rubis workload
 			    #use 100 for the stratos
@@ -140,7 +140,6 @@ def create_topology1():
     			    vnf3.cmd("rm guiltiness*")
 			    client.cmd("rm log*")
 			    server.cmd("rm log*")
-			    net.stop()
 			    exit
     net.stop()
 
