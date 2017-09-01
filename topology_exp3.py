@@ -83,7 +83,7 @@ def create_topology1():
     # create hosts and vnfs
     #use ./init_vnfs_rubis for rubis experiments
     #use ./init_vnfs for stratos experiments
-    subprocess.call("./init_vnfs_rubis_exp3.sh",shell=True)
+    subprocess.call("./init_vnfs_exp3.sh",shell=True)
     subprocess.call("./chain_vnfs_exp3.sh",shell=True)
 
     vnf1, vnf2, vnf3, client, server = net.getNodeByName('vnf1','vnf2','vnf3','client','server')
@@ -92,49 +92,56 @@ def create_topology1():
     #run experiment
     #CONFIGURE number of cores
     cores = 4
-    for i in range(0,4): #Set here the number of repetitions 
+    for i in range(0,1): #Set here the number of repetitions 
        for reqsize in ['128KB']: #available sizes are: '4KB','8KB','16KB','32KB','64KB','128KB','256KB','512KB','1024KB','2048KB','4096KB','8192KB','16384KB','32768KB']: 
           for vnf1cpu in [10,100]:  # set the cpu capacity for the vnf1
              for vnf2cpu in [10,100]: # set the cpu capacity for the vnf2
                 for vnf3cpu in [10,100]: # set the cpu capacity for the vnf3, 5 means 5% of one cpu
-                	r=0
-                	vnf1.setParam(r,'setCPUFrac',cpu=vnf1cpu/(cores*100))
-                	vnf2.setParam(r,'setCPUFrac',cpu=vnf2cpu/(cores*100))
-			vnf3.setParam(r,'setCPUFrac',cpu=vnf3cpu/(cores*100))
-                	strcmd = "%s %d %d %d %d %s %d &" % ('./start_stress.sh',100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i) 
-                	vnf1.cmd(strcmd)
-                	time.sleep(1)
-                	strcmd = "%s %d %d %d %d %s %d &" % ('./start_stress.sh',100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i)
-                	vnf2.cmd(strcmd)
-			time.sleep(1)
-		        strcmd = "%s %d %d %d %d %s %d &" % ('./start_stress.sh',100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i)
-                        vnf3.cmd(strcmd)
-			time.sleep(1)
-                	strcmd = "%s %d %d %d %d %s %d &" % ('./start_server.sh',100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i)
-                	server.cmd(strcmd)
-                	time.sleep(1)
-                	client.cmd("ping -c 2 10.0.0.50 >> log-ping")
-                	client.cmd("ping -c 2 10.0.0.50 >> log-ping")        	                     
-                        strcmd = "%s %d %d %d %d %s %d &" % ('./start_client.sh',fwbw,snortbw,fwcpu,snortcpu,reqsize,i)
-                        client.cmd(strcmd)
-                	#the parameter for iperfc is the target bandwidth
-                	strcmd = "%s %d" % ('./start_iperfc.sh',30)
-                        client.cmd(strcmd)
-                	print "Waiting to the experiment %d-%d-%d-%d-%s-%d"%(fwbw,snortbw,fwcpu,snortcpu,reqsize,i)
-                	#use 180 for rubis workload
-                    #use 100 for the stratos
-			        time.sleep(180)
-                	print "Copy results and cleanup"
-                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* vagrant@10.0.2.15:/home/vagrant/son-emu/logs/"
-                	fw.cmd(strcmd)
-                        snort.cmd(strcmd)
-                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no log* vagrant@10.0.2.15:/home/vagrant/son-emu/logs/"
-                	client.cmd(strcmd)
-                	server.cmd(strcmd)
-                	fw.cmd("rm guiltiness*")
-                	snort.cmd("rm guiltiness*")
-                	client.cmd("rm log*")
-                	server.cmd("rm log*")
+                   for vnf1stress in [0,cores]:
+                      for vnf2stress in [0,cores]:
+		         for vnf3stress in [0,cores]:
+			    r=0
+			    vnf1.setParam(r,'setCPUFrac',cpu=vnf1cpu/(cores*100))
+			    vnf2.setParam(r,'setCPUFrac',cpu=vnf2cpu/(cores*100))
+			    vnf3.setParam(r,'setCPUFrac',cpu=vnf3cpu/(cores*100))
+			    strcmd = "%s %d %d %d %d %s %d %d %d %d %d %s &" % ('./start_stress.sh',100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i,vnf1stress,vnf2stress,vnf3stress,vnf1stress,'vnf1') 
+			    vnf1.cmd(strcmd)
+			    time.sleep(1)
+			    strcmd = "%s %d %d %d %d %s %d %d %d %d %d %s &" % ('./start_stress.sh',100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i,vnf1stress,vnf2stress,vnf3stress,vnf2stress,'vnf2') 
+			    vnf2.cmd(strcmd)
+			    time.sleep(1)
+			    strcmd = "%s %d %d %d %d %s %d %d %d %d %d %s &" % ('./start_stress.sh',100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i,vnf1stress,vnf2stress,vnf3stress,vnf3stress,'vnf3') 
+			    vnf3.cmd(strcmd)
+			    time.sleep(1)
+			    strcmd = "%s %d %d %d %d %s %d %d %d %d &" % ('./start_server.sh',100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i,vnf1stress,vnf2stress,vnf3stress) 
+			    server.cmd(strcmd)
+			    time.sleep(1)
+			    client.cmd("ping -c 2 10.0.0.50 >> log-ping")
+			    client.cmd("ping -c 2 10.0.0.50 >> log-ping")        	                     
+			    strcmd = "%s %d %d %d %d %s %d %d %d %d &" % ('./start_client.sh',100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i,vnf1stress,vnf2stress,vnf3stress) 
+			    client.cmd(strcmd)
+			    #the parameter for iperfc is the target bandwidth
+			    strcmd = "%s %d" % ('./start_iperfc.sh',30)
+			    client.cmd(strcmd)
+			    print "Waiting to the experiment %d-%d-%d-%d-%s-%d-%d-%d-%d"%(100,vnf1cpu,vnf2cpu,vnf3cpu,reqsize,i,vnf1stress,vnf2stress,vnf3stress) 
+			    #use 180 for rubis workload
+			    #use 100 for the stratos
+			    time.sleep(100)
+			    print "Copy results and cleanup"
+			    strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* ubuntu@10.0.2.15:/home/ubuntu/son-emu/logs/"
+			    vnf1.cmd(strcmd)
+			    vnf2.cmd(strcmd)
+    			    vnf3.cmd(strcmd)
+			    strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no log* ubuntu@10.0.2.15:/home/ubuntu/son-emu/logs/"
+			    client.cmd(strcmd)
+			    server.cmd(strcmd)
+			    vnf1.cmd("rm guiltiness*")
+			    vnf2.cmd("rm guiltiness*")
+    			    vnf3.cmd("rm guiltiness*")
+			    client.cmd("rm log*")
+			    server.cmd("rm log*")
+			    net.stop()
+			    exit
     net.stop()
 
 
