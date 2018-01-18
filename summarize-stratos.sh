@@ -28,18 +28,18 @@ for size in 128KB # set here the file sizes you configured
 do
 for i in `seq $START ($END-1)`
 do
-	gvm1=`cut -f 2 ../logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
-	gvm2=`cut -f 2 ../logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
-	uvm1=`cut -f 3 ../logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
-	uvm2=`cut -f 3 ../logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
-	avm1=`cut -f 4 ../logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
-	avm2=`cut -f 4 ../logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
-	qvm1=`cut -f 5 ../logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
-	qvm2=`cut -f 5 ../logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
-	quvm1=`cut -f 6 ../logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
-	quvm2=`cut -f 6 ../logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
-	thr=`cut -f 1 -d , ../logs/log-stratos-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i | cut -f 2 -d : | ./est-media.awk `
-	rt=`cut -f 2 -d , ../logs/log-stratos-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i | cut -f 2 -d : | ./est-media.awk `
+	gvm1=`cut -f 2 /tmp/logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
+	gvm2=`cut -f 2 /tmp/logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
+	uvm1=`cut -f 3 /tmp/logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
+	uvm2=`cut -f 3 /tmp/logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
+	avm1=`cut -f 4 /tmp/logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
+	avm2=`cut -f 4 /tmp/logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
+	qvm1=`cut -f 5 /tmp/logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
+	qvm2=`cut -f 5 /tmp/logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
+	quvm1=`cut -f 6 /tmp/logs/guiltiness-fw-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
+	quvm2=`cut -f 6 /tmp/logs/guiltiness-snort-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i.log.dat |./est-media.awk `
+	thr=`cut -f 1 -d , /tmp/logs/log-stratos-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i | cut -f 2 -d : | ./est-media.awk `
+	rt=`cut -f 2 -d , /tmp/logs/log-stratos-$vm1r-$vm2r-$vm1c-$vm2c-$size-$i | cut -f 2 -d : | ./est-media.awk `
 	echo $vm1r,$vm2r,$vm1c,$vm2c,$size,$gvm1,$gvm2,$uvm1,$uvm2,$avm1,$avm2,$qvm1,$qvm2,$quvm1,$quvm2,$rt,$thr >> summary.csv
 done
 done

@@ -121,12 +121,13 @@ def create_topology1():
                     #use 100 for the stratos
 			time.sleep(180)
                 	print "Copy results and cleanup"
-                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* ubuntu@10.0.2.15:/home/ubuntu/son-emu/logs/"
-                	fw.cmd(strcmd)
+                	#strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* ubuntu@10.0.2.15:/home/ubuntu/son-emu/logs/"
+                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* ubuntu@10.0.2.15:/tmp/experiment"
+			fw.cmd(strcmd)
                         print "passsou fw"
                         snort.cmd(strcmd)
 			print "passou snort"
-                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no log* ubuntu@10.0.2.15:/home/ubuntu/son-emu/logs/"
+                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no log* ubuntu@10.0.2.15:/tmp/experiment"
                 	client.cmd(strcmd)
 			print "passout client"
                 	server.cmd(strcmd)
@@ -139,8 +140,8 @@ def create_topology1():
 			print "passou client rm"
                 	server.cmd("rm log*")
 			print "passou server rm"
-                        net.stop()
-                        exit
+    net.stop()
+    exit
 
 
 def main():

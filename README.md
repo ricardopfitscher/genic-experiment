@@ -42,8 +42,7 @@ $ exit
 # authorized\_keys is at ~/.ssh/authorized\_keys
 nano ~/.ssh/authorized\_keys
 # also, create logs folder to store results:
-$ cd son-emu
-$ mkdir logs
+$ mkdir /tmp/logs
 ```
 
 As soon as the docker images are ready, the next step is to download the experiment scripts and copy the stable version of the SONATA files. SONATA is currently being implemented by third-party developers, therefore some changes on their code can influence our experiments, thus, we mantain a copy of some files in a stable version for our experiment. These files must be copied to the appropriate directory:
@@ -51,6 +50,9 @@ As soon as the docker images are ready, the next step is to download the experim
 ```
 $ git clone https://github.com/ricardopfitscher/genic-experiment
 $ cd genic-experiment
+
+The next two steps are no longer needed
+
 $ cp network.py ../src/emuvim/api/rest/
 $ cp rest_api_endpoint.py ../src/emuvim/api/rest/ 
 ```
