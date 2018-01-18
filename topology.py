@@ -122,12 +122,12 @@ def create_topology1():
 			time.sleep(180)
                 	print "Copy results and cleanup"
                 	#strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* ubuntu@10.0.2.15:/home/ubuntu/son-emu/logs/"
-                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* ubuntu@10.0.2.15:/tmp/experiment"
+                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no guiltiness* ubuntu@10.0.2.15:/tmp/logs"
 			fw.cmd(strcmd)
                         print "passsou fw"
                         snort.cmd(strcmd)
 			print "passou snort"
-                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no log* ubuntu@10.0.2.15:/tmp/experiment"
+                	strcmd = "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no log* ubuntu@10.0.2.15:/tmp/logs"
                 	client.cmd(strcmd)
 			print "passout client"
                 	server.cmd(strcmd)
